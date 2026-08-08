@@ -1,0 +1,114 @@
+@baseUrl = http://localhost:8080
+
+### Documentação OpenAPI (Swagger UI)
+# GET {{baseUrl}}/swagger-ui.html
+# GET {{baseUrl}}/v3/api-docs
+
+### Dados de exemplo (criados no primeiro start)
+GET {{baseUrl}}/usuarios
+
+### Criar usuário
+POST {{baseUrl}}/usuarios
+Content-Type: application/json
+
+{"nome":"Ana"}
+
+### Criar categoria
+POST {{baseUrl}}/categorias
+Content-Type: application/json
+
+{"nome":"Transporte","tipo":"DESPESA"}
+
+### Consultar/atualizar/excluir usuário ou categoria
+GET {{baseUrl}}/usuarios/1
+
+PUT {{baseUrl}}/usuarios/1
+Content-Type: application/json
+
+{"nome":"Usuário de teste atualizado"}
+
+GET {{baseUrl}}/categorias/1
+
+PUT {{baseUrl}}/categorias/1
+Content-Type: application/json
+
+{"nome":"Alimentação","tipo":"DESPESA"}
+
+### Criar forma de pagamento e cartão
+POST {{baseUrl}}/formas-pagamento
+Content-Type: application/json
+
+{"usuarioId":1,"descricao":"Novo cartão","tipo":"CREDITO"}
+
+POST {{baseUrl}}/cartoes-credito
+Content-Type: application/json
+
+{"formaPagamentoId":5,"diaFechamento":20,"diaVencimento":5,"limite":1500.00}
+
+GET {{baseUrl}}/cartoes-credito/1
+
+PUT {{baseUrl}}/cartoes-credito/1
+Content-Type: application/json
+
+{"formaPagamentoId":4,"diaFechamento":25,"diaVencimento":5,"limite":3500.00}
+
+### Formas de pagamento do usuário de teste
+GET {{baseUrl}}/formas-pagamento?usuarioId=1
+
+GET {{baseUrl}}/formas-pagamento/1
+
+PUT {{baseUrl}}/formas-pagamento/1
+Content-Type: application/json
+
+{"usuarioId":1,"descricao":"Dinheiro em espécie","tipo":"DINHEIRO"}
+
+### Criar compra no cartão (forma 4, cartão 1 no banco limpo)
+POST {{baseUrl}}/compras
+Content-Type: application/json
+
+{"usuarioId":1,"categoriaId":1,"formaPagamentoId":4,"descricao":"Supermercado","valorTotal":100.00,"dataCompra":"2026-08-20","numParcelas":3}
+
+### Detalhe de compra (substitua pelo id retornado)
+GET {{baseUrl}}/compras/1
+
+### Cancelar compra (preserva o histórico e marca as parcelas como CANCELADA)
+DELETE {{baseUrl}}/compras/1
+
+### Cancelar compra que possui parcela PAGA (confirmação explícita)
+DELETE {{baseUrl}}/compras/1?confirmarParcelasPagas=true
+
+### Consultar compras por período
+GET {{baseUrl}}/compras?usuarioId=1&inicio=2026-08-01&fim=2026-08-31
+
+### Consultar fatura
+GET {{baseUrl}}/faturas?cartaoId=1&mesReferencia=2026-08
+
+### Detalhe de fatura (substitua pelo id retornado)
+GET {{baseUrl}}/faturas/1
+
+### Cadastrar gasto fixo
+POST {{baseUrl}}/gastos-fixos
+Content-Type: application/json
+
+{"usuarioId":1,"categoriaId":2,"formaPagamentoId":3,"descricao":"Internet","valorPrevisto":99.90,"diaVencimento":10,"recorrencia":"MENSAL","dataInicio":"2026-08-01","ativo":true}
+
+### Listar, consultar, atualizar e excluir gasto fixo
+GET {{baseUrl}}/gastos-fixos?usuarioId=1
+
+GET {{baseUrl}}/gastos-fixos/1
+
+PUT {{baseUrl}}/gastos-fixos/1
+Content-Type: application/json
+
+{"usuarioId":1,"categoriaId":2,"formaPagamentoId":3,"descricao":"Internet fibra","valorPrevisto":109.90,"diaVencimento":10,"recorrencia":"MENSAL","dataInicio":"2026-08-01","ativo":true}
+
+DELETE {{baseUrl}}/gastos-fixos/1
+
+### Excluir recursos sem vínculos (substitua os IDs recém-criados)
+DELETE {{baseUrl}}/cartoes-credito/2
+
+DELETE {{baseUrl}}/formas-pagamento/5
+
+DELETE {{baseUrl}}/categorias/4
+
+DELETE {{baseUrl}}/usuarios/2
